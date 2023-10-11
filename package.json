@@ -1,0 +1,23 @@
+{
+  "name": "waku-tss",
+  "version": "0.0.1",
+  "description": "allows you to use tss (js/wasm) with waku (or wc)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "waku",
+    "wc",
+    "tss",
+    "tss-js",
+    "tss-wasm"
+  ],
+  "author": "kartik@silencelaboratories.com",
+  "license": "ISC",
+  "dependencies": {
+    "@com.silencelaboratories/ecdsa-tss": "^1.1.1",
+    "@com.silencelaboratories/two-party-ecdsa-js": "^4.0.0",
+    "@walletconnect/chat-client": "^0.8.2"
+  }
+}
