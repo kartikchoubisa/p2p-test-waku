@@ -8,7 +8,7 @@ import {
     utf8ToBytes,
     bytesToUtf8,
     WakuNode,
-} from "@waku/sdk";
+} from "./wakusdk.js";
 
 // TODO: i changed to module to create a global variable, which is not ideal
 console.log("Multiaddr: ", globalThis.MultiformatsMultiaddr);
