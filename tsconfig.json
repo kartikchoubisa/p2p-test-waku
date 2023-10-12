@@ -108,5 +108,5 @@
   },
   "include": [
     "src"
-  ]
+, "src/multiaddr.min.ts"  ]
 }

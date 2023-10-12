@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./multiaddr.min.js");
-const wakusdk_js_1 = require("./wakusdk.js");
+const sdk_1 = require("@waku/sdk");
 // TODO: i changed to module to create a global variable, which is not ideal
 console.log("Multiaddr: ", globalThis.MultiformatsMultiaddr);
 class Waku {
@@ -12,14 +12,15 @@ class Waku {
     }
     //C 
     async init() {
-        this.decoder = (0, wakusdk_js_1.createDecoder)(this.contentTopic);
+        this.decoder = (0, sdk_1.createDecoder)(this.contentTopic);
         console.log("content topic", this.contentTopic);
-        this.encoder = (0, wakusdk_js_1.createEncoder)({
+        this.encoder = (0, sdk_1.createEncoder)({
             contentTopic: this.contentTopic,
             ephemeral: null,
             metaSetter: null,
         });
-        this.node = await (0, wakusdk_js_1.createLightNode)();
+        // @ts-ignore
+        this.node = await (0, sdk_1.createLightNode)();
         console.log("peerid???", this.node.libp2p.getConnections());
         await this.node.start();
         await this.dial();
@@ -34,8 +35,10 @@ class Waku {
         }
         console.log("dialing: ", ma);
         const multiaddr = globalThis.MultiformatsMultiaddr.multiaddr(ma);
+        //@ts-ignore
         await this.node.dial(multiaddr, ["filter", "lightpush"]);
-        await (0, wakusdk_js_1.waitForRemotePeer)(this.node, ["filter", "lightpush"], 30000);
+        // @ts-ignore
+        await (0, sdk_1.waitForRemotePeer)(this.node, ["filter", "lightpush"], 30000);
         const peers = await this.node.libp2p.peerStore.all();
         console.log("[waku] peer dialed, peers: ", peers);
     }
@@ -56,13 +59,13 @@ class Waku {
     async sendMessage(message) {
         console.log("[waku] message waiting to send, time (before await): ", Date.now());
         await this.node.lightPush.send(this.encoder, {
-            payload: (0, wakusdk_js_1.utf8ToBytes)(message),
+            payload: (0, sdk_1.utf8ToBytes)(message),
         });
         console.log("[waku] message sent", message, "time (sent): ", Date.now());
     }
     async onMessageRecevied(wakuMessage) {
         console.log(wakuMessage);
-        const text = (0, wakusdk_js_1.bytesToUtf8)(wakuMessage.payload);
+        const text = (0, sdk_1.bytesToUtf8)(wakuMessage.payload);
         const timestamp = wakuMessage.timestamp;
         // TODO remove this hack
         let messageObj = JSON.parse(text);
