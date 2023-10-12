@@ -6,6 +6,11 @@ sdk for using ecdsa-tss (both js and wasm) with p2p communication (with waku)
 ## usage
 
 ## Changelog
+
+## Version 0.0.2
+WIP 
+
+compiled the ts to js for use as module 
 ### Version 0.0.1
 WIP
 
