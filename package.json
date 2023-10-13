@@ -21,7 +21,8 @@
     "@silencelaboratories/two-party-ecdsa-js": "^4.0.0",
     "@walletconnect/chat-client": "^0.7.0",
     "@walletconnect/sync-client": "^0.3.4",
-    "ethers": "^6.8.0"
+    "ethers": "^6.8.0",
+    "@waku/sdk": "0.0.19"
   },
   "devDependencies": {
     "typescript": "^5.2.2"

@@ -8,13 +8,16 @@ import {
     utf8ToBytes,
     bytesToUtf8,
     WakuNode,
-} from "./wakusdk.js";
+    LightNode,
+} from "@waku/sdk";
+
+import { Protocols } from "@waku/sdk";
 
 // TODO: i changed to module to create a global variable, which is not ideal
 console.log("Multiaddr: ", globalThis.MultiformatsMultiaddr);
 
 export default class Waku {
-    private node: WakuNode;
+    private node: LightNode;
     private encoder;
     private decoder;
     private contentTopic = "/js-waku-examples/1/chat/utf8";
@@ -36,7 +39,6 @@ export default class Waku {
             metaSetter: null,
         });
         
-        // @ts-ignore
         this.node = await createLightNode();
         console.log("peerid???", this.node.libp2p.getConnections())
         await this.node.start();
@@ -53,10 +55,8 @@ export default class Waku {
         }
         console.log("dialing: ", ma);
         const multiaddr = globalThis.MultiformatsMultiaddr.multiaddr(ma);
-        //@ts-ignore
-        await this.node.dial(multiaddr, ["filter", "lightpush"]);
-        // @ts-ignore
-        await waitForRemotePeer(this.node, ["filter", "lightpush"], 30000);
+        await this.node.dial(multiaddr, [Protocols.Filter, Protocols.LightPush]);
+        await waitForRemotePeer(this.node, [Protocols.Filter, Protocols.LightPush], 30000);
         const peers = await this.node.libp2p.peerStore.all();
         console.log("[waku] peer dialed, peers: ", peers);
     }
