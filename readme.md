@@ -1,5 +1,39 @@
-## p2p-tss
+# p2p-tss
 sdk for using ecdsa-tss (both js and wasm) with p2p communication (with waku)
+
+# Overview of p2p-tss (waku-tss) and nextapp
+This project consists of two main components: `lib` and `nextapp`. `lib` is an npm package, and `nextapp` is a separate repository that can use `lib` in two different ways.
+
+## 1. `lib` (waku-tss)
+
+### Purpose
+`lib` serves as an npm package that can be utilized both as a standalone server environment and as a library within the `nextapp` frontend application.
+
+### Directory Structure
+- `lib` has the following directory structure:
+  - `run`: Contains code to run `lib` in a server environment.
+  - Additional directories and files specific to `lib` functionality.
+
+## 2. `nextapp`
+
+### Purpose
+`nextapp` is a separate repository that can utilize `lib` in two different ways, depending on the branch used: `dev` and `local-lib`.
+
+### Directory Structure
+- `src`: The main source directory for the `nextapp` application.
+
+### Usage of `lib` in `nextapp`
+
+#### a. `dev` Branch
+
+- In the `dev` branch of `nextapp`, `lib` (waku-tss) is installed as an npm package via the `package.json` file. This allows `nextapp` to use the published version of `lib` from a GitLab repository URL.
+
+#### b. `local-lib` Branch
+
+- In the `local-lib` branch of `nextapp`, `lib` is used directly by including the `waku-tss` repository in the `src` directory of `nextapp`. TypeScript files from `lib` are compiled as part of the `nextapp` build process.
+- This approach is designed to facilitate continuous testing of `lib` within the `nextapp` codebase. Changes made to `lib` can be immediately tested without the need to reinstall the entire package, enhancing development efficiency.
+
+
 
 ## installation
 
