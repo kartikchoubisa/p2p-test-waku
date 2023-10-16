@@ -1,5 +1,5 @@
-import Waku from "./waku";
-import { IMessage } from "./chat";
+import Waku from "./waku.js";
+import { IMessage } from "./chat.js";
 
 export default class ChatForWaku {
     private selfAccount: Waku;

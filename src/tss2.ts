@@ -1,7 +1,7 @@
 import { P1Keygen, P2Keygen, generateSessionId, P1Signer, P2Signer } from '@silencelaboratories/two-party-ecdsa-js';
 import { randBytes as randomBytes } from '@com.silencelaboratories/ecdsa-tss';
-import { receiveMessage, sendMessage, clearReceiveMessageIntervals } from './tss';
-import Chat, { IMessage } from "./chat";
+import { receiveMessage, sendMessage, clearReceiveMessageIntervals } from './tss.js';
+import Chat, { IMessage } from "./chat.js";
 
 
 export async function performKeygen() {

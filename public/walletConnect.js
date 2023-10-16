@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@walletconnect/core");
-const chat_client_1 = require("@walletconnect/chat-client");
-const sync_client_1 = require("@walletconnect/sync-client");
-class WalletConnect {
+import { Core } from "@walletconnect/core";
+import { ChatClient, } from "@walletconnect/chat-client";
+import { SyncClient, SyncStore } from "@walletconnect/sync-client";
+export default class WalletConnect {
     constructor(signer) {
         this.sentMessages = new Set();
         if (!WalletConnect.config) {
@@ -22,22 +20,22 @@ class WalletConnect {
     async init() {
         try {
             // Initialize core separately to allow sharing it between sync and chat
-            const core = new core_1.Core({
+            const core = new Core({
                 projectId: WalletConnect.config.projectId,
             });
             // SyncClient enables syncing data across devices
-            const syncClient = await sync_client_1.SyncClient.init({
+            const syncClient = await SyncClient.init({
                 projectId: WalletConnect.config.projectId,
                 core,
                 relayUrl: WalletConnect.config.relayUrl,
             });
-            this.chatClient = await chat_client_1.ChatClient.init({
+            this.chatClient = await ChatClient.init({
                 core,
                 projectId: WalletConnect.config.projectId,
                 keyserverUrl: WalletConnect.config.keyserverUrl,
                 relayUrl: WalletConnect.config.relayUrl,
                 syncClient,
-                SyncStoreController: sync_client_1.SyncStore,
+                SyncStoreController: SyncStore,
             });
             this.addEventListeners();
             await this.registerOnKeyserver();
@@ -161,4 +159,3 @@ class WalletConnect {
         return messages;
     }
 }
-exports.default = WalletConnect;

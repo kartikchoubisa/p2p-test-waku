@@ -9,7 +9,7 @@ import {
   IP1SignatureResult,
   IP2SignatureResult,
 } from "@com.silencelaboratories/ecdsa-tss";
-import Chat, { IMessage } from "./chat";
+import Chat, { IMessage } from "./chat.js";
 console.log("[tss] LOADED-----------");
 
 let messageDict = {};

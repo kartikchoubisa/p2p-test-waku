@@ -1,4 +1,3 @@
-import "./multiaddr.min.js";
 export default class Waku {
     private node;
     private encoder;

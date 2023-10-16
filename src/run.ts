@@ -42,12 +42,13 @@ let chat = null;
 function main() {
 
     async function setupChatForWaku() {
-        const Waku = (await import ("waku-tss/public/waku")).default
+        const Waku = (await import ("./waku.js")).default
         const waku = await (new Waku()).init();
     
-        const ChatForWaku = (await import("waku-tss/public/chatForWaku")).default
+        const ChatForWaku = (await import("./chatForWaku.js")).default
     
         let name = "P" + argv.party;
+
         chat = new ChatForWaku(waku, name)
         console.log("chat set up --- waku")
     }

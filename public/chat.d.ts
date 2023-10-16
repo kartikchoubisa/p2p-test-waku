@@ -1,5 +1,5 @@
 import { ChatClientTypes } from "@walletconnect/chat-client";
-import WalletConnect from "./walletConnect";
+import WalletConnect from "./walletConnect.js";
 export interface IMessageChunk {
     chunkNumber: number;
     totalChunks: number;

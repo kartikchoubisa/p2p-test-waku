@@ -1,11 +1,13 @@
 {
   "name": "waku-tss",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "allows you to use tss (js/wasm) with waku (or wc)",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf public && npx tsc"
+    "build": "rm -rf public && npx tsc",
+    "start": "nodemon --exec ts-node --esm src/run.ts"
   },
   "keywords": [
     "waku",
@@ -18,13 +20,18 @@
   "license": "ISC",
   "dependencies": {
     "@com.silencelaboratories/ecdsa-tss": "^1.1.1",
+    "@multiformats/multiaddr": "^12.1.1",
     "@silencelaboratories/two-party-ecdsa-js": "^4.0.0",
+    "@waku/sdk": "0.0.19",
     "@walletconnect/chat-client": "^0.7.0",
     "@walletconnect/sync-client": "^0.3.4",
-    "ethers": "^6.8.0",
-    "@waku/sdk": "0.0.19"
+    "ethers": "^6.8.0"
   },
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "@types/yargs": "^17.0.28",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "yargs": "^17.7.2"
   }
 }

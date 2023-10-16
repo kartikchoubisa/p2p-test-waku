@@ -1,5 +1,5 @@
-import "./multiaddr.min.js";
-import { IMessage } from "./chat.js";
+import  {multiaddr as multiformatsMultiaddr} from "@multiformats/multiaddr"
+
 import {
     createLightNode,
     waitForRemotePeer,
@@ -12,6 +12,8 @@ import {
 } from "@waku/sdk";
 
 import { Protocols } from "@waku/sdk";
+
+import { IMessage } from "./chat.js";
 
 // TODO: i changed to module to create a global variable, which is not ideal
 console.log("Multiaddr: ", globalThis.MultiformatsMultiaddr);
@@ -26,8 +28,8 @@ export default class Waku {
 
 
     constructor(remotePeerId? : string) {
-        // this.remotePeerId = remotePeerId || "/dns4/node-01.ac-cn-hongkong-c.wakuv2.test.statusim.net/tcp/8000/wss/p2p/16Uiu2HAkvWiyFsgRhuJEb9JfjYxEkoHLgnUQmr1N5mKWnYjxYRVm"; 
-        this.remotePeerId = remotePeerId || "/dns4/nwaku.silent.sg/tcp/8000/wss/p2p/16Uiu2HAmMbo2nB3ZfTHNZi9tgLARsowksWPh7mBGQFXGSMLnF51o"; 
+        this.remotePeerId = remotePeerId || "/dns4/node-01.ac-cn-hongkong-c.wakuv2.test.statusim.net/tcp/8000/wss/p2p/16Uiu2HAkvWiyFsgRhuJEb9JfjYxEkoHLgnUQmr1N5mKWnYjxYRVm"; 
+        // this.remotePeerId = remotePeerId || "/dns4/nwaku.silent.sg/tcp/8000/wss/p2p/16Uiu2HAmMbo2nB3ZfTHNZi9tgLARsowksWPh7mBGQFXGSMLnF51o"; 
     } 
 //C 
     async init() {
@@ -54,7 +56,7 @@ export default class Waku {
             return;
         }
         console.log("dialing: ", ma);
-        const multiaddr = globalThis.MultiformatsMultiaddr.multiaddr(ma);
+        const multiaddr = multiformatsMultiaddr(ma);
         await this.node.dial(multiaddr, [Protocols.Filter, Protocols.LightPush]);
         await waitForRemotePeer(this.node, [Protocols.Filter, Protocols.LightPush], 30000);
         const peers = await this.node.libp2p.peerStore.all();

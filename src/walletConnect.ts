@@ -6,7 +6,7 @@ import {
 } from "@walletconnect/chat-client";
 import { ISyncClient, SyncClient, SyncStore } from "@walletconnect/sync-client";
 
-import Signer from "./wallet";
+import Signer from "./wallet.js";
 
 interface IConfig {
   projectId: string;

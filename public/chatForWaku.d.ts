@@ -1,4 +1,4 @@
-import Waku from "./waku";
+import Waku from "./waku.js";
 export default class ChatForWaku {
     private selfAccount;
     private name;

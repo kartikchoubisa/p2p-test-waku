@@ -1,5 +1,5 @@
 import { IP1KeyShare, IP2KeyShare } from "@com.silencelaboratories/ecdsa-tss";
-import Chat from "./chat";
+import Chat from "./chat.js";
 export declare function performKeygenP1(chat: Chat): Promise<IP1KeyShare>;
 export declare function performKeygenP2(chat: Chat): Promise<IP2KeyShare>;
 export declare function clearReceiveMessageIntervals(): Promise<void>;

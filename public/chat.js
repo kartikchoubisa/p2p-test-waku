@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 class Chat {
     constructor(self, peerAddress, options) {
         this.isConnected = false;
@@ -274,4 +272,4 @@ class Chat {
 // this design allows ONLY ONE chat in the app
 // todo: persist chat topic?
 Chat.MESSAGE_CHAR_LIMIT = 2000;
-exports.default = Chat;
+export default Chat;

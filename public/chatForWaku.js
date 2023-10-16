@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class ChatForWaku {
+export default class ChatForWaku {
     constructor(self, name) {
         this.selfAccount = self;
         this.name = name;
@@ -16,4 +14,3 @@ class ChatForWaku {
         this.selfAccount.sendMessage(messageString);
     }
 }
-exports.default = ChatForWaku;

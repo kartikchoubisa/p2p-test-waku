@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.signature = exports.performSignatureP2 = exports.performSignatureP1 = exports.performSignature = exports.performKeygen = exports.sendMessage = exports.receiveMessage = exports.clearReceiveMessageIntervals = exports.performKeygenP2 = exports.performKeygenP1 = void 0;
-const ecdsa_tss_1 = require("@com.silencelaboratories/ecdsa-tss");
+import { P1KeyGen, P2KeyGen, randBytes, P1Signature, P2Signature, } from "@com.silencelaboratories/ecdsa-tss";
 console.log("[tss] LOADED-----------");
 let messageDict = {};
 globalThis.receiveMessageIntervals = [];
@@ -19,10 +16,10 @@ async function delay(ms) {
 //     console.log("msg_next", msg_next)
 //     await sendMessage(msg_next.msg_to_send,chat);
 // }
-async function performKeygenP1(chat) {
+export async function performKeygenP1(chat) {
     const sessionId = "some session id";
-    const x1 = await (0, ecdsa_tss_1.randBytes)(32);
-    const p1 = new ecdsa_tss_1.P1KeyGen(sessionId, x1);
+    const x1 = await randBytes(32);
+    const p1 = new P1KeyGen(sessionId, x1);
     await p1.init();
     // Round 1
     const msg1 = await p1.processMessage(null);
@@ -40,11 +37,10 @@ async function performKeygenP1(chat) {
     console.log("p1KeyShare", p1KeyShare);
     return p1KeyShare;
 }
-exports.performKeygenP1 = performKeygenP1;
-async function performKeygenP2(chat) {
+export async function performKeygenP2(chat) {
     const sessionId = "some session id";
-    const x2 = await (0, ecdsa_tss_1.randBytes)(32);
-    const p2 = new ecdsa_tss_1.P2KeyGen(sessionId, x2);
+    const x2 = await randBytes(32);
+    const p2 = new P2KeyGen(sessionId, x2);
     // Round 1
     console.log("started listening!");
     let msg1_received = await receiveMessage(1);
@@ -58,7 +54,6 @@ async function performKeygenP2(chat) {
     console.log("p2KeyShare", p2KeyShare);
     return p2KeyShare;
 }
-exports.performKeygenP2 = performKeygenP2;
 function putMessageToDict(message) {
     let phase = message.phase;
     // get last digit in phase string
@@ -72,13 +67,12 @@ function getMessageFromDict(phaseNum) {
     messageDict[phaseNum] = null;
     return message;
 }
-async function clearReceiveMessageIntervals() {
+export async function clearReceiveMessageIntervals() {
     globalThis.receiveMessageIntervals.forEach((interval) => {
         clearInterval(interval);
     });
 }
-exports.clearReceiveMessageIntervals = clearReceiveMessageIntervals;
-async function receiveMessage(phaseNum) {
+export async function receiveMessage(phaseNum) {
     return await new Promise((resolve, reject) => {
         globalThis.receiveMessageIntervals.push(setInterval(() => {
             if (!globalThis.tempReceivedMessage)
@@ -99,20 +93,18 @@ async function receiveMessage(phaseNum) {
         }, 30000);
     });
 }
-exports.receiveMessage = receiveMessage;
-async function sendMessage(msg_to_send, chat) {
+export async function sendMessage(msg_to_send, chat) {
     console.log("[tss] sending message: ", JSON.parse(msg_to_send), "timestamp", Date.now());
     await chat.sendMessage(msg_to_send);
     // await delay(5000)
 }
-exports.sendMessage = sendMessage;
-async function performKeygen() {
+export async function performKeygen() {
     const sessionId = "some session id";
-    const x1 = await (0, ecdsa_tss_1.randBytes)(32);
-    const x2 = await (0, ecdsa_tss_1.randBytes)(32);
-    const p1 = new ecdsa_tss_1.P1KeyGen(sessionId, x1);
+    const x1 = await randBytes(32);
+    const x2 = await randBytes(32);
+    const p1 = new P1KeyGen(sessionId, x1);
     await p1.init();
-    const p2 = new ecdsa_tss_1.P2KeyGen(sessionId, x2);
+    const p2 = new P2KeyGen(sessionId, x2);
     // Round 1
     const msg1 = await p1.processMessage(null);
     console.log("msg1.msg_to_send", msg1.msg_to_send.length);
@@ -133,12 +125,11 @@ async function performKeygen() {
     console.log("p2KeyShare", p2KeyShare);
     return [p1KeyShare, p2KeyShare];
 }
-exports.performKeygen = performKeygen;
-async function performSignature() {
+export async function performSignature() {
     const sessionId = "session id for signature";
-    const messageHash = await (0, ecdsa_tss_1.randBytes)(32);
-    const p1 = new ecdsa_tss_1.P1Signature(sessionId, messageHash, globalThis.p1keyshare);
-    const p2 = new ecdsa_tss_1.P2Signature(sessionId, messageHash, globalThis.p2keyshare);
+    const messageHash = await randBytes(32);
+    const p1 = new P1Signature(sessionId, messageHash, globalThis.p1keyshare);
+    const p2 = new P2Signature(sessionId, messageHash, globalThis.p2keyshare);
     // Round 1
     const msg1 = await p1.processMessage(null);
     const msg2 = await p2.processMessage(msg1.msg_to_send);
@@ -156,15 +147,14 @@ async function performSignature() {
     console.log("p1Sign", "0x" + p1Sign);
     console.log("p2Sign", "0x" + p2Sign);
 }
-exports.performSignature = performSignature;
-async function performSignatureP1(chat, p1KeyShare) {
+export async function performSignatureP1(chat, p1KeyShare) {
     const sessionId = "session id for signature";
     const messageHash = Uint8Array.from([
         209, 208, 90, 82, 131, 171, 223, 205, 184, 236, 127, 63, 223, 171, 56, 179,
         184, 170, 54, 127, 4, 6, 152, 70, 97, 31, 187, 151, 16, 91, 91, 20,
     ]);
     console.log("messageHash to sign: ", messageHash);
-    const p1 = new ecdsa_tss_1.P1Signature(sessionId, messageHash, p1KeyShare);
+    const p1 = new P1Signature(sessionId, messageHash, p1KeyShare);
     //round 1
     const msg1 = await p1.processMessage(null);
     sendMessage(msg1.msg_to_send, chat);
@@ -183,15 +173,14 @@ async function performSignatureP1(chat, p1KeyShare) {
     console.log("[tss] msg5 sent (final)");
     return p1Sign;
 }
-exports.performSignatureP1 = performSignatureP1;
-async function performSignatureP2(chat, p2KeyShare) {
+export async function performSignatureP2(chat, p2KeyShare) {
     const sessionId = "session id for signature";
     const messageHash = Uint8Array.from([
         209, 208, 90, 82, 131, 171, 223, 205, 184, 236, 127, 63, 223, 171, 56, 179,
         184, 170, 54, 127, 4, 6, 152, 70, 97, 31, 187, 151, 16, 91, 91, 20,
     ]);
     console.log("messageHash to sign: ", messageHash);
-    const p2 = new ecdsa_tss_1.P2Signature(sessionId, messageHash, p2KeyShare);
+    const p2 = new P2Signature(sessionId, messageHash, p2KeyShare);
     // round 1
     const msg1_received = await receiveMessage();
     const msg2 = await p2.processMessage(msg1_received);
@@ -209,17 +198,16 @@ async function performSignatureP2(chat, p2KeyShare) {
     console.log("p2Sign", "0x" + p2Sign);
     return p2Sign;
 }
-exports.performSignatureP2 = performSignatureP2;
-async function signature() {
+export async function signature() {
     const sessionId = "session id for signature";
-    const messageHash = await (0, ecdsa_tss_1.randBytes)(32);
+    const messageHash = await randBytes(32);
     console.log(messageHash);
     const keyshares = await performKeygen();
     if (keyshares === null) {
         throw new Error("Keygen failed");
     }
-    const p1 = new ecdsa_tss_1.P1Signature(sessionId, messageHash, keyshares[0]);
-    const p2 = new ecdsa_tss_1.P2Signature(sessionId, messageHash, keyshares[1]);
+    const p1 = new P1Signature(sessionId, messageHash, keyshares[0]);
+    const p2 = new P2Signature(sessionId, messageHash, keyshares[1]);
     // Round 1
     const msg1 = await p1.processMessage(null);
     const msg2 = await p2.processMessage(msg1.msg_to_send);
@@ -237,4 +225,3 @@ async function signature() {
     console.log("p1Sign", "0x" + p1Sign);
     console.log("p2Sign", "0x" + p2Sign);
 }
-exports.signature = signature;

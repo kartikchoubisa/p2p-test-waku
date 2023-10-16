@@ -1,5 +1,5 @@
 import { ChatClientTypes, IChatClient } from "@walletconnect/chat-client";
-import Signer from "./wallet";
+import Signer from "./wallet.js";
 export default class WalletConnect {
     chatClient: IChatClient;
     address: string;

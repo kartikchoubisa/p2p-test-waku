@@ -41,6 +41,14 @@ This project consists of two main components: `lib` and `nextapp`. `lib` is an n
 
 ## Changelog
 
+## Version 0.0.3
+WIP 
+
+* added multiformats/multiaddr as an npm dependency
+* added a run.ts file to run the server
+* changed tsconfig to debug some build issues with run.ts
+
+
 ## Version 0.0.2
 WIP 
 
