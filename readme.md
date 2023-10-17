@@ -41,6 +41,19 @@ This project consists of two main components: `lib` and `nextapp`. `lib` is an n
 
 ## Changelog
 
+## Version 0.0.4
+(untested) stable for use as lib
+(tested) stable for use in server 
+
+In run.ts:
+- Updated main to call the setupChatForWaku, runKeygen, and runSign functions in sequence
+
+In waku.ts:
+- Added an enum remotePeerDomains to define available remote peer options
+- Updated the constructor to accept a remotePeerId argument and set a default value of "NEW"
+- Added logic to handle custom and default peer ids in the constructor
+
+
 ## Version 0.0.3
 stable for use as library
 WIP run script

@@ -18,22 +18,35 @@ import { IMessage } from "./chat.js";
 // TODO: i changed to module to create a global variable, which is not ideal
 console.log("Multiaddr: ", globalThis.MultiformatsMultiaddr);
 
+export enum remotePeerDomains {
+    HK = "/dns4/node-01.ac-cn-hongkong-c.wakuv2.test.statusim.net/tcp/8000/wss/p2p/16Uiu2HAkvWiyFsgRhuJEb9JfjYxEkoHLgnUQmr1N5mKWnYjxYRVm",
+    SL_SG = "/dns4/nwaku.silent.sg/tcp/8000/wss/p2p/16Uiu2HAmMbo2nB3ZfTHNZi9tgLARsowksWPh7mBGQFXGSMLnF51o",
+    NEW = "/dns4/node-01.do-ams3.wakuv2.test.statusim.net/tcp/8000/wss/p2p/16Uiu2HAmPLe7Mzm8TsYUubgCAW1aJoeFScxrLj8ppHFivPo97bUZ"
+}
+
 export default class Waku {
     private node: LightNode;
     private encoder;
     private decoder;
     private contentTopic = "/js-waku-examples/1/chat/utf8";
     private remotePeerId;
-        
 
 
     constructor(remotePeerId? : string) {
-        // this.remotePeerId = remotePeerId || "/dns4/node-01.ac-cn-hongkong-c.wakuv2.test.statusim.net/tcp/8000/wss/p2p/16Uiu2HAkvWiyFsgRhuJEb9JfjYxEkoHLgnUQmr1N5mKWnYjxYRVm"; 
-        // this.remotePeerId = remotePeerId || "/dns4/nwaku.silent.sg/tcp/8000/wss/p2p/16Uiu2HAmMbo2nB3ZfTHNZi9tgLARsowksWPh7mBGQFXGSMLnF51o"; 
-        this.remotePeerId = remotePeerId || "/dns4/node-01.do-ams3.wakuv2.test.statusim.net/tcp/8000/wss/p2p/16Uiu2HAmPLe7Mzm8TsYUubgCAW1aJoeFScxrLj8ppHFivPo97bUZ"; 
+        if (!remotePeerId) {
+            this.remotePeerId = remotePeerDomains.NEW; // set a default peer id here
+            return
+        }
 
-    } 
-//C 
+        if (!(remotePeerId in remotePeerDomains)) {
+            console.log("[waku] custom peer id given: ", remotePeerId);
+            this.remotePeerId = remotePeerId;
+            return
+        }
+
+        this.remotePeerId = remotePeerDomains[remotePeerId];
+    }
+
     async init() {
         this.decoder = createDecoder(this.contentTopic);
         console.log("content topic", this.contentTopic);
@@ -106,7 +119,7 @@ export default class Waku {
         const timestamp = wakuMessage.timestamp
         // TODO remove this hack
         let messageObj: IMessage = JSON.parse(text);
-        let messageFromSelf = messageObj.authorAccount == window.location.port
+        let messageFromSelf = messageObj.authorAccount == "P2"
         if (messageFromSelf) return;
         console.log("[waku] RAW message recevied callback", text, " time: ", Date.now());
         console.log("[waku] time taken to receive = ", Date.now() - messageObj.timestamp)
