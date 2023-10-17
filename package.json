@@ -1,6 +1,6 @@
 {
   "name": "waku-tss",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "allows you to use tss (js/wasm) with waku (or wc)",
   "main": "index.js",
   "type": "module",
