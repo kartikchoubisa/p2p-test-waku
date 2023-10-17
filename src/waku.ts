@@ -117,9 +117,16 @@ export default class Waku {
         console.log(wakuMessage);
         const text = bytesToUtf8(wakuMessage.payload);
         const timestamp = wakuMessage.timestamp
-        // TODO remove this hack
+        // TODO remove this hack (hardcoding the author account )
         let messageObj: IMessage = JSON.parse(text);
-        let messageFromSelf = messageObj.authorAccount == "P2"
+        let messageFromSelf: boolean;
+        if (typeof window !== 'undefined') {
+            // browser code
+            messageFromSelf = messageObj.authorAccount == window.location.port
+        } else {
+            // node code
+            messageFromSelf = messageObj.authorAccount == "P2"
+        }
         if (messageFromSelf) return;
         console.log("[waku] RAW message recevied callback", text, " time: ", Date.now());
         console.log("[waku] time taken to receive = ", Date.now() - messageObj.timestamp)

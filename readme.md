@@ -43,7 +43,7 @@ This project consists of two main components: `lib` and `nextapp`. `lib` is an n
 
 ## Version 0.0.4
 (untested) stable for use as lib
-(tested) stable for use in server 
+(tested) stable for use in server (ONLY AS Party2 in server)
 
 In run.ts:
 - Updated main to call the setupChatForWaku, runKeygen, and runSign functions in sequence
