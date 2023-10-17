@@ -1,5 +1,6 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import ChatForWaku from './chatForWaku.js';
 
 const argv = yargs(hideBin(process.argv))
     .option('party', {
@@ -35,7 +36,7 @@ const argv = yargs(hideBin(process.argv))
 console.log('Arguments:', argv);
 
 // GLOBAL 
-let chat = null;
+let chat: ChatForWaku;
 
 // setup chat
 
